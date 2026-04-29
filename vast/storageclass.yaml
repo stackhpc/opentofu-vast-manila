@@ -1,0 +1,51 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: csi-manila-jg
+provisioner: nfs.manila.csi.openstack.org
+parameters:
+  csi.storage.k8s.io/provisioner-secret-name: csi-manila-credentials
+  csi.storage.k8s.io/provisioner-secret-namespace: openstack-system
+  csi.storage.k8s.io/controller-expand-secret-name: csi-manila-credentials
+  csi.storage.k8s.io/controller-expand-secret-namespace: openstack-system
+  csi.storage.k8s.io/node-stage-secret-name: csi-manila-credentials
+  csi.storage.k8s.io/node-stage-secret-namespace: openstack-system
+  csi.storage.k8s.io/node-publish-secret-name: csi-manila-credentials
+  csi.storage.k8s.io/node-publish-secret-namespace: openstack-system
+  type: vast_1146
+  nfs-shareClient: 192.168.4.0/24
+reclaimPolicy: "Delete"
+allowVolumeExpansion: true
+# volumeBindingMode: "WaitForFirstConsumer"
+# allowedTopologies:
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-manila
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: csi-manila-jg
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: shell-demo
+spec:
+  volumes:
+  - name: shared-data
+    persistentVolumeClaim:
+      claimName: pvc-manila
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - name: shared-data
+      mountPath: /usr/share/nginx/html
+  hostNetwork: true
+  dnsPolicy: Default
