@@ -1,0 +1,15 @@
+variable "vippools" {
+  type = map(
+    object({
+      vlan                  = optional(number)
+      role                  = optional(string)
+      subnet_cidr           = optional(number)
+      ip_ranges = optional(
+        list(object({
+        ip_ranges = optional(string)
+        })), []
+      )
+    })
+  )
+  default = {}
+}

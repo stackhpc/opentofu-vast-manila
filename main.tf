@@ -23,15 +23,14 @@ provider "vastdata" {
   skip_ssl_verify = true
 }
 
-resource "vastdata_vip_pool" "openstack_vlan_1146" {
-  name                      = "openstack_vlan_1146"
-  vlan = 1146
-  role = "PROTOCOLS"
-  subnet_cidr = "24"
-  # enable_weighted_balancing = true
-  ip_ranges = [
-    ["192.168.4.200", "192.168.4.249"],
-  ]
+resource "vastdata_vip_pool" "vippool" {
+  for_each = var.vippools
+
+  name = each.key
+  vlan = lookup(each.value, "vlan", null)
+  role = lookup(each.value, "role", null)
+  subnet_cidr = lookup(each.value, "subnet_cidr", null)
+  ip_ranges = lookup(each.value, "ip_ranges", [])
 }
 
 # need vast config updated with share type, then do something like:
