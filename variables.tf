@@ -4,11 +4,7 @@ variable "vippools" {
       vlan                  = optional(number)
       role                  = optional(string)
       subnet_cidr           = optional(number)
-      ip_ranges = optional(
-        list(object({
-        ip_ranges = optional(string)
-        })), []
-      )
+      ip_ranges = optional(list(list(string)), [])
     })
   )
   default = {}

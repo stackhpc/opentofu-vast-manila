@@ -30,7 +30,7 @@ resource "vastdata_vip_pool" "vippool" {
   vlan = lookup(each.value, "vlan", null)
   role = lookup(each.value, "role", null)
   subnet_cidr = lookup(each.value, "subnet_cidr", null)
-  ip_ranges = optional(list(list(string)), [])
+  ip_ranges = lookup(each.value, "ip_ranges", [])
 }
 
 # need vast config updated with share type, then do something like:
