@@ -6,6 +6,10 @@ variable "vast_host" {
   default = "10.3.2.10"
 }
 
+variable "username" {
+  default = "openstack-manila"
+}
+
 terraform {
   required_providers {
     vastdata = {
@@ -16,7 +20,7 @@ terraform {
 }
 
 provider "vastdata" {
-  username        = "openstack-manila"
+  username        = var.username
   port            = 443
   password        = var.password
   host            = var.vast_host
