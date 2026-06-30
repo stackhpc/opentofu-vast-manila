@@ -45,12 +45,14 @@ variable "subnets" {
     gateway_ip = optional(string)
     cidr       = optional(string)
   }))
+  default = {}
 }
 
 variable "projects" {
   type = map(object({
     id = string
   }))
+  default = {}
 }
 
 variable "networks" {
@@ -60,4 +62,5 @@ variable "networks" {
       segmentation_id = optional(number)
     }))
   }))
+  default = {}
 }
