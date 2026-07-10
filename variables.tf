@@ -64,3 +64,12 @@ variable "networks" {
   }))
   default = {}
 }
+
+output "vippools" {
+  value = {
+    for k, v in vastdata_vip_pool.vippool :
+    k => {
+      name = v.name
+    }
+  }
+}
